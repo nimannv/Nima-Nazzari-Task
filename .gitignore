@@ -1,5 +1,6 @@
 # Custom
 /fastapi/venv/
+/grpc_server/venv/
 
 
 # Byte-compiled / optimized / DLL files
