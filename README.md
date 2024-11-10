@@ -29,6 +29,9 @@ We will use Python to create the gRPC server that serves our data.
 [FastAPI](https://fastapi.tiangolo.com/) is a modern, fast (high-performance) web framework for building APIs with Python, based on standard Python type hints. I will use this framework for the API layer of the project. The structure and best practices are inspired by the following repository:
 [FastAPI Best Practices](https://github.com/zhanymkanov/fastapi-best-practices)
 
+### Typer
+[Typer](https://typer.tiangolo.com/) is a library for building CLI applications. I use this for make and manage my commands on projects (such as run project, and test execution and ...)
+
 ### InfluxDB
 [InfluxDB](https://www.influxdata.com/) is a powerful database built specifically for time series data. It will be used to store and query the electricity consumption data.
 
