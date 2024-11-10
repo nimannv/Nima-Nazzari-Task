@@ -1,7 +1,8 @@
 # Custom
-/fastapi/venv/
-/grpc_server/venv/
-
+project/fastapi/venv/
+project/grpc_server/venv/
+project/influxdb/config/
+project/influxdb/data/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
