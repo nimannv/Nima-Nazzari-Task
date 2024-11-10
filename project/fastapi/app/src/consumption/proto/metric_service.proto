@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package metric;
+
+import "google/protobuf/timestamp.proto";
+
+// Request to get metrics between start and end time
+message MetricRequest {
+    google.protobuf.Timestamp start_time = 1;
+    google.protobuf.Timestamp end_time = 2;
+}
+
+// A single data point
+message DataPoint {
+    google.protobuf.Timestamp time = 1;
+    double value = 2;
+}
+
+// Response containing a list of data points
+message MetricResponse {
+    repeated DataPoint data_points = 1;
+}
+
+// Service definition
+service MetricService {
+    rpc GetMetrics (MetricRequest) returns (MetricResponse);
+}

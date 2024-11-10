@@ -3,4 +3,5 @@ WORKDIR /app
 COPY ./requirements.txt /requirements.txt
 RUN pip install --no-cache-dir --upgrade -r /requirements.txt
 COPY ./app /app/
+RUN python -m grpc_tools.protoc -I=. --python_out=. --grpc_python_out=. src/consumption/proto/metric_service.proto
 CMD []
