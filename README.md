@@ -39,5 +39,5 @@ We will use Python to create the gRPC server that serves our data.
 2. Start the services using Docker Compose:
    ```bash
    docker-compose up
-3. Access the API documentation at http://localhost:8000/docs.
+3. Access the API documentation and call them at http://localhost:8000/docs.
 
