@@ -13,7 +13,7 @@ class MetricService(metric_service_pb2_grpc.MetricServiceServicer):
     def __init__(self):
 
         # Initialize a Metric object with a CSV data loader for demonstration
-        data_loader = DataLoaderFactory.create_data_loader('csv', file_path='meterusage.csv')
+        data_loader = DataLoaderFactory.create_csv_loader('meterusage.csv')
         self.metric = Metric(data_loader)
 
     def GetMetrics(self, request, context):
