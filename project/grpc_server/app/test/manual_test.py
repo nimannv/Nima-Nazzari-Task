@@ -14,7 +14,7 @@ def test_csv():
     for data in csv_data:
         print(data.time, data.value)
 
-def influx_test():
+def test_influx():
     data_loader = DataLoaderFactory.create_influxdb_loader('http://localhost:8086', 'mytoken', 'spectral')
     metric = Metric(data_loader)
     
