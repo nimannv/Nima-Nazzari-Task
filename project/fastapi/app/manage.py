@@ -1,5 +1,4 @@
 import typer
-# from typing import Optional
 import uvicorn
 
 app = typer.Typer()
@@ -9,7 +8,7 @@ def runserver(port: int):
     uvicorn.run("src.main:app", host="0.0.0.0", port=port, reload=False, log_level="debug")
 
 @app.command()
-def test(port: int):
+def test():
     print('test')
 
 if __name__ == "__main__":
