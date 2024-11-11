@@ -4,27 +4,33 @@ services:
   fastapi:
     build: ./fastapi
     ports:
-      - 8000:8000
+      - "${FASTAPI_PORT}:${FASTAPI_PORT}"
+    env_file:
+      - ./fastapi/.env
     depends_on:
       - grpc_server
-    command: ["python", "manage.py", "runserver", "8000"]
+    command: ["python", "manage.py", "runserver", "${FASTAPI_PORT}"]
 
   grpc_server:
     build: ./grpc_server
     ports:
-      - 50051:50051
+      - "${GRPC_PORT}:${GRPC_PORT}"
+    env_file:
+      - ./grpc_server/.env
     depends_on:
       - influxdb
-    command: ["python", "manage.py", "runserver", "50051"]
+    command: ["python", "manage.py", "runserver", "${GRPC_PORT}"]
   
   influxdb:
     build: ./influxDB
     ports:
-      - '8086:8086'
-    environment:
-      - DOCKER_INFLUXDB_INIT_MODE=setup
-      - DOCKER_INFLUXDB_INIT_USERNAME=myuser
-      - DOCKER_INFLUXDB_INIT_PASSWORD=mypassword
-      - DOCKER_INFLUXDB_INIT_ORG=spectral
-      - DOCKER_INFLUXDB_INIT_BUCKET=spectral
-      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=mytoken
+      - "${INFLUXDB_PORT}:${INFLUXDB_PORT}"
+    env_file:
+      - ./influxdb/.env
+    # environment:
+    #   - DOCKER_INFLUXDB_INIT_MODE=setup
+    #   - DOCKER_INFLUXDB_INIT_USERNAME=myuser
+    #   - DOCKER_INFLUXDB_INIT_PASSWORD=mypassword
+    #   - DOCKER_INFLUXDB_INIT_ORG=spectral
+    #   - DOCKER_INFLUXDB_INIT_BUCKET=spectral
+    #   - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=mytoken

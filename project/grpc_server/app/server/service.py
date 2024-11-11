@@ -1,8 +1,9 @@
+from datetime import datetime, timezone
+import os
+
 from server.proto import metric_service_pb2, metric_service_pb2_grpc
 
 from google.protobuf.timestamp_pb2 import Timestamp
-
-from datetime import datetime, timezone
 
 from data.data_loader.data_loader_factory import DataLoaderFactory
 from data.metric.metric import Metric
@@ -15,7 +16,7 @@ class MetricService(metric_service_pb2_grpc.MetricServiceServicer):
         # data_loader = DataLoaderFactory.create_csv_loader('meterusage.csv')
 
         # Influx data_loader
-        data_loader = DataLoaderFactory.create_influxdb_loader('http://influxdb:8086', 'mytoken', 'spectral')
+        data_loader = DataLoaderFactory.create_influxdb_loader(os.getenv('INFLUXDB_URL'), os.getenv('INFLUXDB_TOKEN'), os.getenv('INFLUXDB_ORG'))
 
         self.metric = Metric(data_loader)
 
