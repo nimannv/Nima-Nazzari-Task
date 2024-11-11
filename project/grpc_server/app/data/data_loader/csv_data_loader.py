@@ -21,6 +21,6 @@ class CSVDataLoader(DataLoader):
                     value = float(row['meterusage'])
                     # NaN value is possible in CSV file
                     if math.isnan(value):
-                        value = None
+                        continue
                     data_points.append(DataPoint(time, value))
         return data_points
