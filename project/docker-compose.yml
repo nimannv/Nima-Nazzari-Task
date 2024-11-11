@@ -15,7 +15,7 @@ services:
       - 50051:50051
     depends_on:
       - influxdb
-    command: ["python", "manage.py", "runserver"]
+    command: ["python", "manage.py", "runserver", "50051"]
   
   influxdb:
     build: ./influxDB
