@@ -16,7 +16,7 @@ class MetricService(metric_service_pb2_grpc.MetricServiceServicer):
         # data_loader = DataLoaderFactory.create_csv_loader('meterusage.csv')
 
         # Influx data_loader
-        data_loader = DataLoaderFactory.create_influxdb_loader(os.getenv('INFLUXDB_URL'), os.getenv('INFLUXDB_TOKEN'), os.getenv('INFLUXDB_ORG'))
+        data_loader = DataLoaderFactory.create_influxdb_loader(os.getenv('INFLUXDB_URL', 'http://localhost:8086'), os.getenv('INFLUXDB_TOKEN', 'mytoken'), os.getenv('INFLUXDB_ORG', 'spectral'))
 
         self.metric = Metric(data_loader)
 
