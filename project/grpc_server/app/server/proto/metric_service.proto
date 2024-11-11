@@ -3,7 +3,6 @@ syntax = "proto3";
 package metric;
 
 import "google/protobuf/timestamp.proto";
-import "google/protobuf/empty.proto";
 
 // Request to get metrics between start and end time
 message MetricRequest {
@@ -14,10 +13,7 @@ message MetricRequest {
 // A single data point
 message DataPoint {
     google.protobuf.Timestamp time = 1;
-    oneof value {
-        double float_value = 2;
-        google.protobuf.Empty none_value = 3; // for NaN values
-    }
+    double value = 2;
 }
 
 // Response containing a list of data points
