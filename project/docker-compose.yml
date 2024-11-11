@@ -3,8 +3,6 @@ version: '3.7'
 services:
   fastapi:
     build: ./fastapi
-    volumes:
-      - ./fastapi/app/:/app/
     ports:
       - 8000:8000
     depends_on:
@@ -13,22 +11,20 @@ services:
 
   grpc_server:
     build: ./grpc_server
-    volumes:
-      - ./grpc_server/app/:/app/
     ports:
       - 50051:50051
+    depends_on:
+      - influxdb
     command: ["python", "main.py"]
   
   influxdb:
     build: ./influxDB
     ports:
       - '8086:8086'
-    # volumes:
-    #   - ./influxdb/data:/var/lib/influxdb
-    #   - ./influxdb/config:/etc/influxdb2
     environment:
       - DOCKER_INFLUXDB_INIT_MODE=setup
       - DOCKER_INFLUXDB_INIT_USERNAME=myuser
       - DOCKER_INFLUXDB_INIT_PASSWORD=mypassword
       - DOCKER_INFLUXDB_INIT_ORG=spectral
       - DOCKER_INFLUXDB_INIT_BUCKET=spectral
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=mytoken
