@@ -58,35 +58,3 @@ if __name__ == '__main__':
     serve()
 
 
-
-
-
-
-
-
-# # Build a Metric with an InfluxDB data loader without any filter
-# influx_loader = DataLoaderFactory.create_data_loader(
-#     'influxdb',
-#     host='localhost', port=8086, database='mydatabase'
-# )
-
-# metric_influx = (metric_builder
-#                  .set_data_loader(influx_loader)
-#                  .build())
-
-# influx_data = metric_influx.get_data_between(start_time, end_time)
-# print(influx_data)
-
-# # Build a Metric with a TimescaleDB data loader and a different filter
-# timescale_loader = DataLoaderFactory.create_data_loader(
-#     'timescale',
-#     host='localhost', port=5432, database='mydatabase', user='user', password='password'
-# )
-
-# metric_timescale = (metric_builder
-#                     .set_data_loader(timescale_loader)
-#                     .set_filter(lambda dps: filter_by_value_threshold(dps, 100.0))
-#                     .build())
-
-# timescale_data = metric_timescale.get_data_between(start_time, end_time)
-# print(timescale_data)
