@@ -8,6 +8,7 @@
 3. [Technologies](#technologies)
    - [Python gRPC Server](#python-grpc-server)
    - [FastAPI](#fastapi)
+   - [Typer](#typer)
    - [InfluxDB](#influxdb)
 4. [How to Run](#how-to-run)
 
