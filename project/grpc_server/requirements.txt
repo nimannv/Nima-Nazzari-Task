@@ -3,11 +3,13 @@ charset-normalizer==3.4.0
 grpcio==1.67.1
 grpcio-tools==1.67.1
 idna==3.10
-influxdb==5.3.2
+influxdb-client==1.47.0
 msgpack==1.1.0
 protobuf==5.28.3
 python-dateutil==2.9.0.post0
 pytz==2024.2
+reactivex==4.0.4
 requests==2.32.3
 six==1.16.0
+typing-extensions==4.12.2
 urllib3==2.2.3
