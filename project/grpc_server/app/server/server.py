@@ -20,7 +20,5 @@ def serve(port: int):
     except Exception as e:
         logger.error(f"Exception occurred: {e}", exc_info=True)
 
-if __name__ == '__main__':
-    serve()
 
 
