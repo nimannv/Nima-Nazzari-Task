@@ -6,20 +6,26 @@ from data.data_loader.data_loader_factory import DataLoaderFactory
 from data.metric.metric import Metric
 
 from google.protobuf.timestamp_pb2 import Timestamp
-from datetime import datetime
+from datetime import datetime, timezone
+import logging
 
 
 class MetricService(metric_service_pb2_grpc.MetricServiceServicer):
     def __init__(self):
 
-        # Initialize a Metric object with a CSV data loader for demonstration
-        data_loader = DataLoaderFactory.create_csv_loader('meterusage.csv')
+        # CSV data_loader
+        # data_loader = DataLoaderFactory.create_csv_loader('meterusage.csv')
+
+        # Influx data_loader
+        data_loader = DataLoaderFactory.create_influxdb_loader('http://localhost:8086', 'mytoken', 'spectral')
+
         self.metric = Metric(data_loader)
 
     def GetMetrics(self, request, context):
         # Convert gRPC Timestamps to Python datetime objects
-        start_time = datetime.utcfromtimestamp(request.start_time.seconds)
-        end_time = datetime.utcfromtimestamp(request.end_time.seconds)
+        
+        start_time = datetime.utcfromtimestamp(request.start_time.seconds).replace(tzinfo=timezone.utc)
+        end_time = datetime.utcfromtimestamp(request.end_time.seconds).replace(tzinfo=timezone.utc)
 
         # Fetch data points between start_time and end_time
         data_points = self.metric.get_data_between(start_time, end_time)
@@ -34,12 +40,19 @@ class MetricService(metric_service_pb2_grpc.MetricServiceServicer):
         return response
 
 def serve():
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    metric_service_pb2_grpc.add_MetricServiceServicer_to_server(MetricService(), server)
-    server.add_insecure_port('[::]:50051')
-    print("gRPC server is running on port 50051...")
-    server.start()
-    server.wait_for_termination()
+    # Set up logging
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger(__name__)
+
+    try:
+        server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+        metric_service_pb2_grpc.add_MetricServiceServicer_to_server(MetricService(), server)
+        server.add_insecure_port('[::]:50051')
+        logger.info("gRPC server is running on port 50051...")
+        server.start()
+        server.wait_for_termination()
+    except Exception as e:
+        logger.error(f"Exception occurred: {e}", exc_info=True)
 
 if __name__ == '__main__':
     serve()
