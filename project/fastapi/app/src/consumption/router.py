@@ -1,5 +1,5 @@
 from fastapi import Depends, HTTPException, APIRouter
-from ..consumption import dependencies, schemas, service
+from src.consumption import dependencies, schemas, service
 
 from datetime import datetime
 

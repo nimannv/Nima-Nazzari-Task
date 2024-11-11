@@ -2,8 +2,8 @@ import logging
 from datetime import datetime
 
 import grpc
-from ..consumption.proto import metric_service_pb2, metric_service_pb2_grpc
-from ..config import settings
+from src.consumption.proto import metric_service_pb2, metric_service_pb2_grpc
+from src.config import settings
 
 async def get_data_from_gRPC(start_time: datetime, end_time: datetime):
     try:
