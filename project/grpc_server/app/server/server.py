@@ -39,7 +39,7 @@ class MetricService(metric_service_pb2_grpc.MetricServiceServicer):
         
         return response
 
-def serve():
+def serve(port: int):
     # Set up logging
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger(__name__)
@@ -47,8 +47,8 @@ def serve():
     try:
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
         metric_service_pb2_grpc.add_MetricServiceServicer_to_server(MetricService(), server)
-        server.add_insecure_port('[::]:50051')
-        logger.info("gRPC server is running on port 50051...")
+        server.add_insecure_port('[::]:' + str(port))
+        logger.info("gRPC server is running on port " + str(port) + "...")
         server.start()
         server.wait_for_termination()
     except Exception as e:

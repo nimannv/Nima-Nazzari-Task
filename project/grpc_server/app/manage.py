@@ -7,8 +7,8 @@ from server import server
 app = typer.Typer()
 
 @app.command()
-def runserver():
-    server.serve()
+def runserver(port: int):
+    server.serve(port)
 
 @app.command()
 def test_csv_data_loader():
