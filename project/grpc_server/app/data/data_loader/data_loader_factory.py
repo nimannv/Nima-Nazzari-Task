@@ -10,9 +10,9 @@ class DataLoaderFactory:
         return CSVDataLoader(file_path)
 
     @staticmethod
-    def create_influxdb_loader(host: str, port: int, database: str) -> InfluxDBDataLoader:
+    def create_influxdb_loader(url: str, token: str, org: str) -> InfluxDBDataLoader:
         """Creates and returns an InfluxDBDataLoader."""
-        return InfluxDBDataLoader(host, port, database)
+        return InfluxDBDataLoader(url, token, org)
 
     @staticmethod
     def create_timescale_loader(
