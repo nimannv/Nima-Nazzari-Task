@@ -1,5 +1,7 @@
 import typer
+import unittest
 import uvicorn
+import os
 
 app = typer.Typer()
 
@@ -9,7 +11,7 @@ def runserver(port: int):
 
 @app.command()
 def test():
-    print('test')
+    os.system('pytest')
 
 if __name__ == "__main__":
     app()
