@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 from data.data_loader.data_loader_factory import DataLoaderFactory
 from data.metric.metric import Metric
 
-def test_csv():
+def csv_test():
     
     csv_loader = DataLoaderFactory.create_csv_loader('meterusage.csv')
     metric = Metric(csv_loader)
@@ -14,7 +14,7 @@ def test_csv():
     for data in csv_data:
         print(data.time, data.value)
 
-def test_influx():
+def influx_test():
     data_loader = DataLoaderFactory.create_influxdb_loader('http://localhost:8086', 'mytoken', 'spectral')
     metric = Metric(data_loader)
     

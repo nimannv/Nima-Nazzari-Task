@@ -14,11 +14,11 @@ def runserver(port: int):
 
 @app.command()
 def manual_test_csv():
-    manual_test.test_csv()
+    manual_test.csv_test()
 
 @app.command()
 def manual_test_influx():
-    manual_test.test_influx()
+    manual_test.influx_test()
 
 @app.command()
 def run_all_tests():
