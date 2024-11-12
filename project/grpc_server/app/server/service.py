@@ -10,15 +10,8 @@ from data.metric.metric import Metric
 
 
 class MetricService(metric_service_pb2_grpc.MetricServiceServicer):
-    def __init__(self):
-
-        # CSV data_loader
-        # data_loader = DataLoaderFactory.create_csv_loader('meterusage.csv')
-
-        # Influx data_loader
-        data_loader = DataLoaderFactory.create_influxdb_loader(os.getenv('INFLUXDB_URL', 'http://localhost:8086'), os.getenv('INFLUXDB_TOKEN', 'mytoken'), os.getenv('INFLUXDB_ORG', 'spectral'))
-
-        self.metric = Metric(data_loader)
+    def __init__(self, metric):
+        self.metric = metric
 
     def GetMetrics(self, request, context):
         # Convert gRPC Timestamps to Python datetime objects

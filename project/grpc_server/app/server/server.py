@@ -12,7 +12,21 @@ def serve(port: int):
 
     try:
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-        metric_service_pb2_grpc.add_MetricServiceServicer_to_server(MetricService(), server)
+
+        # CSV data_loader
+        # data_loader = DataLoaderFactory.create_csv_loader('meterusage.csv')
+
+        # Influx data_loader
+        data_loader = DataLoaderFactory.create_influxdb_loader(
+            os.getenv('INFLUXDB_URL', 'http://localhost:8086'),
+            os.getenv('INFLUXDB_TOKEN', 'mytoken'),
+            os.getenv('INFLUXDB_ORG', 'spectral')
+        )
+
+        metric = Metric(data_loader)
+
+        metric_service = MetricService(metric)
+        metric_service_pb2_grpc.add_MetricServiceServicer_to_server(metric_service, server)
         server.add_insecure_port('[::]:' + str(port))
         logger.info("gRPC server is running on port " + str(port) + "...")
         server.start()
