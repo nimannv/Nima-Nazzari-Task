@@ -6,6 +6,3 @@ COPY initial_data.csv /docker-entrypoint-initdb.d/initial_data.csv
 
 # Make the initialization script executable
 RUN chmod +x /docker-entrypoint-initdb.d/init_influxdb.sh
-
-# Run InfluxDB
-# CMD ["influxd"]

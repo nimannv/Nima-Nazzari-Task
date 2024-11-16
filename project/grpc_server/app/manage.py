@@ -21,7 +21,7 @@ def manual_test_influx():
     manual_test.influx_test()
 
 @app.command()
-def run_all_tests():
+def test():
     os.system('pytest')
 
 
