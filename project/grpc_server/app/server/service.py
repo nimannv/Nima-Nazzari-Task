@@ -1,12 +1,8 @@
 from datetime import datetime, timezone
-import os
 
 from server.proto import metric_service_pb2, metric_service_pb2_grpc
 
 from google.protobuf.timestamp_pb2 import Timestamp
-
-from data.data_loader.data_loader_factory import DataLoaderFactory
-from data.metric.metric import Metric
 
 
 class MetricService(metric_service_pb2_grpc.MetricServiceServicer):

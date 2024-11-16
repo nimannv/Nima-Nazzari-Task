@@ -1,8 +1,12 @@
+import os
 from concurrent import futures
 import grpc
 from server.proto import metric_service_pb2_grpc
 from server.service import MetricService
 import logging
+
+from data.data_loader.data_loader_factory import DataLoaderFactory
+from data.metric.metric import Metric
 
 
 def serve(port: int):
