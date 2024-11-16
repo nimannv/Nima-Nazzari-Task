@@ -1,4 +1,4 @@
-import os
+from config import settings
 from concurrent import futures
 import grpc
 from server.proto import metric_service_pb2_grpc
@@ -17,15 +17,20 @@ def serve(port: int):
     try:
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 
-        # CSV data_loader
-        # data_loader = DataLoaderFactory.create_csv_loader('meterusage.csv')
 
-        # Influx data_loader
-        data_loader = DataLoaderFactory.create_influxdb_loader(
-            os.getenv('INFLUXDB_URL', 'http://localhost:8086'),
-            os.getenv('INFLUXDB_TOKEN', 'mytoken'),
-            os.getenv('INFLUXDB_ORG', 'spectral')
-        )
+        if settings.DATA_LOADER_TYPE == "csv":
+            logger.info("setting CSV data loader")
+            data_loader = DataLoaderFactory.create_csv_loader('meterusage.csv')
+        elif settings.DATA_LOADER_TYPE == "influxdb":
+            logger.info("setting Influxdb data loader")
+            data_loader = DataLoaderFactory.create_influxdb_loader(
+                settings.INFLUXDB_URL,
+                settings.INFLUXDB_TOKEN,
+                settings.INFLUXDB_ORG
+            )
+        else:
+            raise Exception('There is no valid DATA_LOADER_TYPE')
+
 
         metric_use_case = MetricUseCase(data_loader)
 
