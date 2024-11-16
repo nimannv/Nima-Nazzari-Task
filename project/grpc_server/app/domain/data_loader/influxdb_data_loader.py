@@ -3,8 +3,8 @@ from datetime import datetime
 from typing import List
 import os
 
-from data.data_loader.base import DataLoader
-from data.metric.data_point import DataPoint
+from domain.data_loader.base import DataLoader
+from domain.metric.data_point import DataPoint
 
 class InfluxDBDataLoader(DataLoader):
     def __init__(self, url: str, token: str, org: str):

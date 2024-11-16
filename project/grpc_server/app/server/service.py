@@ -6,8 +6,8 @@ from google.protobuf.timestamp_pb2 import Timestamp
 
 
 class MetricService(metric_service_pb2_grpc.MetricServiceServicer):
-    def __init__(self, metric):
-        self.metric = metric
+    def __init__(self, metric_use_case):
+        self.metric_use_case = metric_use_case
 
     def GetMetrics(self, request, context):
         # Convert gRPC Timestamps to Python datetime objects
@@ -16,7 +16,7 @@ class MetricService(metric_service_pb2_grpc.MetricServiceServicer):
         end_time = datetime.utcfromtimestamp(request.end_time.seconds).replace(tzinfo=timezone.utc)
 
         # Fetch data points between start_time and end_time
-        data_points = self.metric.get_data_between(start_time, end_time)
+        data_points = self.metric_use_case.get_data_between(start_time, end_time)
 
         # Convert data points to the response format
         response = metric_service_pb2.MetricResponse()

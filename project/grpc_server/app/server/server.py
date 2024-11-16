@@ -5,8 +5,8 @@ from server.proto import metric_service_pb2_grpc
 from server.service import MetricService
 import logging
 
-from data.data_loader.data_loader_factory import DataLoaderFactory
-from data.metric.metric import Metric
+from domain.data_loader.data_loader_factory import DataLoaderFactory
+from domain.metric.metric_use_case import MetricUseCase
 
 
 def serve(port: int):
@@ -27,9 +27,9 @@ def serve(port: int):
             os.getenv('INFLUXDB_ORG', 'spectral')
         )
 
-        metric = Metric(data_loader)
+        metric_use_case = MetricUseCase(data_loader)
 
-        metric_service = MetricService(metric)
+        metric_service = MetricService(metric_use_case)
         metric_service_pb2_grpc.add_MetricServiceServicer_to_server(metric_service, server)
         server.add_insecure_port('[::]:' + str(port))
         logger.info("gRPC server is running on port " + str(port) + "...")

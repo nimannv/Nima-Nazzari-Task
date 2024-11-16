@@ -4,8 +4,8 @@ from datetime import datetime, timezone
 import grpc
 from server.proto import metric_service_pb2
 from server.server import MetricService
-from data.metric.data_point import DataPoint
-from data.metric.metric import Metric
+from domain.metric.data_point import DataPoint
+from domain.metric.metric_use_case import MetricUseCase
 
 
 class TestMetricService(unittest.TestCase):
@@ -20,17 +20,17 @@ class TestMetricService(unittest.TestCase):
 
         request = metric_service_pb2.MetricRequest(start_time=start_time, end_time=end_time)
 
-        mock_metric = MagicMock(spec=Metric)
-        mock_metric.get_data_between.return_value = [
+        metric_use_case_mock = MagicMock(spec=MetricUseCase)
+        metric_use_case_mock.get_data_between.return_value = [
             DataPoint(datetime(2023, 1, 3), 100.0)
         ]
-        metric_service = MetricService(mock_metric)
+        metric_service = MetricService(metric_use_case_mock)
 
         # when
         response = metric_service.GetMetrics(request, None)
 
         # then
-        mock_metric.get_data_between.assert_called_with(
+        metric_use_case_mock.get_data_between.assert_called_with(
             datetime(2023, 1, 2, tzinfo=timezone.utc),
             datetime(2023, 1, 1, tzinfo=timezone.utc)
         )
@@ -45,10 +45,10 @@ class TestMetricService(unittest.TestCase):
         start_time = datetime(2023, 1, 2)
         end_time = datetime(2023, 1, 1)
 
-        metric_mock = MagicMock(spec=Metric)
-        metric_mock.get_data_between.return_value = []
+        metric_use_case_mock = MagicMock(spec=MetricUseCase)
+        metric_use_case_mock.get_data_between.return_value = []
 
-        metric_service = MetricService(metric_mock)
+        metric_service = MetricService(metric_use_case_mock)
 
         request = metric_service_pb2.MetricRequest(start_time=start_time, end_time=end_time)
         
@@ -65,10 +65,10 @@ class TestMetricService(unittest.TestCase):
 
         request = metric_service_pb2.MetricRequest(start_time=start_time, end_time=end_time)
 
-        metric_mock = MagicMock(spec=Metric)
-        metric_mock.get_data_between.side_effect = ValueError
+        metric_use_case_mock = MagicMock(spec=MetricUseCase)
+        metric_use_case_mock.get_data_between.side_effect = ValueError
 
-        metric_sevice = MetricService(metric_mock)
+        metric_sevice = MetricService(metric_use_case_mock)
 
         # then
         with self.assertRaises(ValueError):

@@ -1,15 +1,15 @@
 import unittest
 from unittest.mock import MagicMock
 from datetime import datetime
-from data.metric.data_point import DataPoint
-from data.data_loader.base import DataLoader
-from data.metric.metric import Metric
+from domain.metric.data_point import DataPoint
+from domain.data_loader.base import DataLoader
+from domain.metric.metric_use_case import MetricUseCase
 
 
 class TestMetric(unittest.TestCase):
 
-    def _get_fake_metric(self, loader_mock):
-        return Metric(data_loader=loader_mock)
+    def _get_fake_metric_use_case(self, loader_mock):
+        return MetricUseCase(data_loader=loader_mock)
 
     def test_multiple_data_points(self):
         # given
@@ -25,10 +25,10 @@ class TestMetric(unittest.TestCase):
         loader_mock.get_data_between.return_value = expected  # Simulate return value
 
         # Create the Metric object with the mock loader
-        metric = self._get_fake_metric(loader_mock)
+        metric_use_case = self._get_fake_metric_use_case(loader_mock)
 
         # when
-        actual = metric.get_data_between(start_time, end_time)
+        actual = metric_use_case.get_data_between(start_time, end_time)
 
         # then
         self.assertEqual(actual, expected)
@@ -45,10 +45,10 @@ class TestMetric(unittest.TestCase):
         loader_mock.get_data_between.return_value = expected  # Simulate no data points
 
         # Create the Metric object with the mock loader
-        metric = self._get_fake_metric(loader_mock)
+        metric_use_case = self._get_fake_metric_use_case(loader_mock)
 
         # when
-        actual = metric.get_data_between(start_time, end_time)
+        actual = metric_use_case.get_data_between(start_time, end_time)
 
         # then
         self.assertEqual(actual, expected)  # Should return an empty list
@@ -71,10 +71,10 @@ class TestMetric(unittest.TestCase):
         loader_mock.get_data_between.return_value = expected  # Simulate invalid data points
 
         # Create the Metric object with the mock loader
-        metric = self._get_fake_metric(loader_mock)
+        metric_use_case = self._get_fake_metric_use_case(loader_mock)
 
         # when
-        actual = metric.get_data_between(start_time, end_time)
+        actual = metric_use_case.get_data_between(start_time, end_time)
 
         # then
         self.assertEqual(actual, expected)

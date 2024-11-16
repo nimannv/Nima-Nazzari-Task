@@ -62,14 +62,14 @@ We will use Python to create the gRPC server that serves the data.
 3. Access the API documentation and interact with it at [http://localhost:8000/docs](http://localhost:8000/docs).
 
 ### Changing the Data Loader
-Currently, there are two data loaders available for the metrics in the system: CSV and InfluxDB. You can switch between them in the gRPC server to load data for the metrics. The configuration is located in `project/grpc_server/app/server/service.py`.
+Currently, there are two data loaders available for the metrics in the system: CSV and InfluxDB. You can switch between them in the gRPC server to load data for the metrics. The configuration is located in `project/grpc_server/app/server/server.py`.
 
 #### CSV Loader
 To use the CSV data loader, modify the code as follows:
 ```python
 # CSV data_loader
 data_loader = DataLoaderFactory.create_csv_loader('meterusage.csv')
-self.metric = Metric(data_loader)
+self.metric_use_cace = MetricUseCase(data_loader)
 ```
 
 #### InfluxDB Loader
@@ -81,5 +81,5 @@ data_loader = DataLoaderFactory.create_influxdb_loader(
     os.getenv('INFLUXDB_TOKEN'), 
     os.getenv('INFLUXDB_ORG')
 )
-self.metric = Metric(data_loader)
+self.metric_use_cace = MetricUseCase(data_loader)
 ```

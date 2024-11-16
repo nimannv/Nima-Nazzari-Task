@@ -1,29 +1,29 @@
 from datetime import datetime, timezone
-from data.data_loader.data_loader_factory import DataLoaderFactory
-from data.metric.metric import Metric
+from domain.data_loader.data_loader_factory import DataLoaderFactory
+from domain.metric.metric_use_case import MetricUseCase
 
 def csv_test():
     
     csv_loader = DataLoaderFactory.create_csv_loader('meterusage.csv')
-    metric = Metric(csv_loader)
+    metric_use_case = MetricUseCase(csv_loader)
     
     start_time = datetime.strptime("2019-01-01 01:00:00", '%Y-%m-%d %H:%M:%S').replace(tzinfo=timezone.utc)
     end_time = datetime.strptime("2019-01-01 02:00:00", '%Y-%m-%d %H:%M:%S').replace(tzinfo=timezone.utc)
 
-    csv_data = metric.get_data_between(start_time, end_time)
-    for data in csv_data:
-        print(data.time, data.value)
+    data_points = metric_use_case.get_data_between(start_time, end_time)
+    for dp in data_points:
+        print(dp.time, dp.value)
 
 def influx_test():
     data_loader = DataLoaderFactory.create_influxdb_loader('http://localhost:8086', 'mytoken', 'spectral')
-    metric = Metric(data_loader)
+    metric_use_case = MetricUseCase(data_loader)
     
     start_time = datetime.strptime("2019-01-01 01:00:00", '%Y-%m-%d %H:%M:%S').replace(tzinfo=timezone.utc)
     end_time = datetime.strptime("2019-01-01 02:00:00", '%Y-%m-%d %H:%M:%S').replace(tzinfo=timezone.utc)
 
-    csv_data = metric.get_data_between(start_time, end_time)
-    for data in csv_data:
-        print(data.time, data.value)
+    data_points = metric_use_case.get_data_between(start_time, end_time)
+    for dp in data_points:
+        print(dp.time, dp.value)
         
 
 

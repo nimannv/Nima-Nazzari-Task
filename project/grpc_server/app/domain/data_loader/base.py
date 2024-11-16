@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import List
 
-from data.metric.data_point import DataPoint
+from domain.metric.data_point import DataPoint
 
 class DataLoader(ABC):
     @abstractmethod
