@@ -20,3 +20,8 @@ def test_general():
                     }
                 ]
             }
+
+def test_time_order():
+    response = client.get("/get_consumptions?start_time=2019-01-01%2001%3A30%3A00&end_time=2019-01-01%2001%3A00%3A00")
+    assert response.status_code == 400
+    assert response.json() == {"detail": "End time is before start time!"}

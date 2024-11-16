@@ -8,6 +8,10 @@ router = APIRouter()
 @router.get("/get_consumptions")
 async def get_consumptions(start_time: datetime, end_time: datetime) -> schemas.get_consumptions_res:
 
+        # check time orders
+        if end_time < start_time:
+            raise HTTPException(status_code=400, detail="End time is before start time!")
+
         gRPC_response = await service.get_data_from_gRPC(start_time, end_time)
 
         res = []
