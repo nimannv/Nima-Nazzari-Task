@@ -20,7 +20,7 @@ def serve(port: int):
 
         if settings.DATA_LOADER_TYPE == "csv":
             logger.info("setting CSV data loader")
-            data_loader = DataLoaderFactory.create_csv_loader('meterusage.csv')
+            data_loader = DataLoaderFactory.create_csv_loader(settings.CSV_FILE_ADDRESS)
         elif settings.DATA_LOADER_TYPE == "influxdb":
             logger.info("setting Influxdb data loader")
             data_loader = DataLoaderFactory.create_influxdb_loader(
