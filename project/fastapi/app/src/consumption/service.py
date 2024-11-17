@@ -2,16 +2,15 @@ import logging
 from datetime import datetime
 
 import grpc
-from src.consumption.proto import metric_service_pb2, metric_service_pb2_grpc
-from src.config import settings
+from src.consumption.proto import metric_service_pb2
 
-async def get_data_from_gRPC(start_time: datetime, end_time: datetime):
+from src.config import settings
+from src.consumption.grpc_client import GRPCClient
+
+async def get_data_from_gRPC(grpc_client: GRPCClient, start_time: datetime, end_time: datetime):
     try:
-        channel = grpc.aio.insecure_channel(settings.GRPC_ADDRESS)
-        stub = metric_service_pb2_grpc.MetricServiceStub(channel)
         request = metric_service_pb2.MetricRequest(start_time=start_time, end_time=end_time)
-        response = await stub.GetMetrics(request)
-        await channel.close()
+        response = await grpc_client.stub.GetMetrics(request)
         return response
 
     except grpc.RpcError as e:
