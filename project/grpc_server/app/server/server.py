@@ -10,13 +10,11 @@ from domain.metric.metric_use_case import MetricUseCase
 
 
 def serve(port: int):
-    # Set up logging
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger(__name__)
 
     try:
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-
 
         if settings.DATA_LOADER_TYPE == "csv":
             logger.info("setting CSV data loader")
@@ -29,19 +27,25 @@ def serve(port: int):
                 settings.INFLUXDB_ORG
             )
         else:
-            raise Exception('There is no valid DATA_LOADER_TYPE')
-
+            logger.error("Invalid DATA_LOADER_TYPE specified")
+            raise ValueError('There is no valid DATA_LOADER_TYPE')
 
         metric_use_case = MetricUseCase(data_loader)
-
         metric_service = MetricService(metric_use_case)
         metric_service_pb2_grpc.add_MetricServiceServicer_to_server(metric_service, server)
+
         server.add_insecure_port('[::]:' + str(port))
         logger.info("gRPC server is running on port " + str(port) + "...")
+        
         server.start()
         server.wait_for_termination()
+    
+    except ValueError as ve:
+        logger.error(f"ValueError occurred: {ve}", exc_info=True)
+    except grpc.RpcError as rpc_err:
+        logger.error(f"gRPC error occurred: {rpc_err}", exc_info=True)
     except Exception as e:
-        logger.error(f"Exception occurred: {e}", exc_info=True)
-
-
-
+        logger.error(f"Unexpected error occurred: {e}", exc_info=True)
+    finally:
+        server.stop(0)
+        logger.info("Server has been stopped")

@@ -10,7 +10,11 @@ app = typer.Typer()
 
 @app.command()
 def runserver(port: int):
-    server.serve(port)
+    try:
+        server.serve(port)
+    except Exception as e:
+        logging.error(f"Failed to run the server on port {port}: {e}", exc_info=True)
+
 
 @app.command()
 def manual_test_csv():
