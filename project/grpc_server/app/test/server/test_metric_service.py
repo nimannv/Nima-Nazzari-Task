@@ -11,9 +11,6 @@ from domain.metric.metric_use_case import MetricUseCase
 class TestMetricService(unittest.TestCase):
 
     def test_metric_service_get_data(self):
-        """
-        Test that MetricService correctly calls the Metric get_data_between method without checking time.
-        """
         # given
         start_time = datetime(2023, 1, 2)
         end_time = datetime(2023, 1, 1)
@@ -38,9 +35,6 @@ class TestMetricService(unittest.TestCase):
         self.assertEqual(response.data_points[0].value, 100.0)
 
     def test_empty_data_points(self):
-        """
-        Test when the query returns no data points within the given time range.
-        """
         #given
         start_time = datetime(2023, 1, 2)
         end_time = datetime(2023, 1, 1)
