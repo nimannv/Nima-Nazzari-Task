@@ -95,6 +95,7 @@ python manage.py --help
    - `project/.env.sample`
    - `project/grpc_server/.env.sample`
    - `project/rest_api_gateway/.env.sample`
+   - `project/influxdb/.env.sample`
 3. Start the services using Docker Compose:
    ```
    docker-compose up
