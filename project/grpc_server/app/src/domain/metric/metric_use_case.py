@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import List
-from domain.metric.data_point import DataPoint
-from domain.data_loader.base import DataLoader
+from src.domain.metric.data_point import DataPoint
+from src.domain.data_loader.base import DataLoader
 
 class MetricUseCase:
     def __init__(self, data_loader: DataLoader):

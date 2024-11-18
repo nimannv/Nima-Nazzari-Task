@@ -1,12 +1,13 @@
-from config import settings
-from concurrent import futures
-import grpc
-from server.proto import metric_service_pb2_grpc
-from server.service import MetricService
 import logging
 
-from domain.data_loader.data_loader_factory import DataLoaderFactory
-from domain.metric.metric_use_case import MetricUseCase
+from concurrent import futures
+import grpc
+
+from src.config import settings
+from src.server.proto import metric_service_pb2_grpc
+from src.server.service import MetricService
+from src.domain.data_loader.data_loader_factory import DataLoaderFactory
+from src.domain.metric.metric_use_case import MetricUseCase
 
 
 def serve(port: int):

@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
 
-from server.proto import metric_service_pb2, metric_service_pb2_grpc
+import grpc
+from src.server.proto import metric_service_pb2, metric_service_pb2_grpc
 
 from google.protobuf.timestamp_pb2 import Timestamp
 

@@ -2,24 +2,24 @@ version: '3.7'
 
 services:
   fastapi:
-    build: ./fastapi
+    build: ./rest_api_gateway
     ports:
-      - "${FASTAPI_PORT}:${FASTAPI_PORT}"
+      - "${REST_API_GATEWAY_PORT}:${REST_API_GATEWAY_PORT}"
     env_file:
       - ./fastapi/.env
     depends_on:
       - grpc_server
-    command: ["python", "manage.py", "runserver", "${FASTAPI_PORT}"]
+    command: ["python", "manage.py", "runserver", "${REST_API_GATEWAY_PORT}"]
 
   grpc_server:
     build: ./grpc_server
     ports:
-      - "${GRPC_PORT}:${GRPC_PORT}"
+      - "${GRPC_SERVER_PORT}:${GRPC_SERVER_PORT}"
     env_file:
       - ./grpc_server/.env
     depends_on:
       - influxdb
-    command: ["python", "manage.py", "runserver", "${GRPC_PORT}"]
+    command: ["python", "manage.py", "runserver", "${GRPC_SERVER_PORT}"]
   
   influxdb:
     build: ./influxDB

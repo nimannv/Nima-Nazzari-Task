@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
-from domain.data_loader.data_loader_factory import DataLoaderFactory
-from domain.metric.metric_use_case import MetricUseCase
+from src.domain.data_loader.data_loader_factory import DataLoaderFactory
+from src.domain.metric.metric_use_case import MetricUseCase
 
 def csv_test():
     

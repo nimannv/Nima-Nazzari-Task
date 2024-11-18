@@ -1,8 +1,8 @@
 import unittest
 from unittest.mock import patch, mock_open
 from datetime import datetime, timezone
-from domain.data_loader.csv_data_loader import CSVDataLoader
-from domain.metric.data_point import DataPoint
+from src.domain.data_loader.csv_data_loader import CSVDataLoader
+from src.domain.metric.data_point import DataPoint
 
 
 class TestCSVDataLoader(unittest.TestCase):

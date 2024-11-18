@@ -1,6 +1,6 @@
-from domain.data_loader.csv_data_loader import CSVDataLoader
-from domain.data_loader.influxdb_data_loader import InfluxDBDataLoader
-from domain.data_loader.timescale_data_loader import TimescaleDBDataLoader
+from src.domain.data_loader.csv_data_loader import CSVDataLoader
+from src.domain.data_loader.influxdb_data_loader import InfluxDBDataLoader
+from src.domain.data_loader.timescale_data_loader import TimescaleDBDataLoader
 
 class DataLoaderFactory:
 

@@ -2,10 +2,10 @@ import unittest
 from unittest.mock import MagicMock
 from datetime import datetime, timezone
 import grpc
-from server.proto import metric_service_pb2
-from server.server import MetricService
-from domain.metric.data_point import DataPoint
-from domain.metric.metric_use_case import MetricUseCase
+from src.server.proto import metric_service_pb2
+from src.server.server import MetricService
+from src.domain.metric.data_point import DataPoint
+from src.domain.metric.metric_use_case import MetricUseCase
 
 
 class TestMetricService(unittest.TestCase):
@@ -22,9 +22,10 @@ class TestMetricService(unittest.TestCase):
             DataPoint(datetime(2023, 1, 3), 100.0)
         ]
         metric_service = MetricService(metric_use_case_mock)
+        mock_context = MagicMock()
 
         # when
-        response = metric_service.GetMetrics(request, None)
+        response = metric_service.GetMetrics(request, mock_context)
 
         # then
         metric_use_case_mock.get_data_between.assert_called_with(
@@ -45,9 +46,10 @@ class TestMetricService(unittest.TestCase):
         metric_service = MetricService(metric_use_case_mock)
 
         request = metric_service_pb2.MetricRequest(start_time=start_time, end_time=end_time)
+        mock_context = MagicMock()
         
         #when
-        response = metric_service.GetMetrics(request, None)
+        response = metric_service.GetMetrics(request, mock_context)
 
         #then
         self.assertEqual(len(response.data_points), 0)
@@ -60,13 +62,19 @@ class TestMetricService(unittest.TestCase):
         request = metric_service_pb2.MetricRequest(start_time=start_time, end_time=end_time)
 
         metric_use_case_mock = MagicMock(spec=MetricUseCase)
-        metric_use_case_mock.get_data_between.side_effect = ValueError
+        metric_use_case_mock.get_data_between.side_effect = ValueError("Test error")
 
-        metric_sevice = MetricService(metric_use_case_mock)
+        metric_service = MetricService(metric_use_case_mock)
+
+        mock_context = MagicMock()
+
+        # when
+        response = metric_service.GetMetrics(request, mock_context)
 
         # then
-        with self.assertRaises(ValueError):
-            metric_sevice.GetMetrics(request, None)
+        mock_context.set_code.assert_called_once_with(grpc.StatusCode.INTERNAL)
+        mock_context.set_details.assert_called_once_with("An internal error occurred: Test error")
+        self.assertIsInstance(response, metric_service_pb2.MetricResponse)
 
 
 

@@ -2,8 +2,8 @@
 from datetime import datetime
 from typing import List
 
-from domain.data_loader.base import DataLoader
-from domain.metric.data_point import DataPoint
+from src.domain.data_loader.base import DataLoader
+from src.domain.metric.data_point import DataPoint
 
 class TimescaleDBDataLoader(DataLoader):
     def __init__(self, host, port, database, user, password):

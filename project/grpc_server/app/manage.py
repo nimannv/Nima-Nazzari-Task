@@ -2,8 +2,8 @@ import typer
 import unittest
 import os
 
-from test import manual_test
-from server import server
+from src.test import manual_test
+from src.server import server
 
 
 app = typer.Typer()

@@ -10,4 +10,4 @@ RUN pip install --no-cache-dir --upgrade -r /requirements.txt
 COPY ./app /app/
 
 # Generate gRPC code
-RUN python -m grpc_tools.protoc -I=. --python_out=. --grpc_python_out=. server/proto/metric_service.proto
+RUN python -m grpc_tools.protoc -I=. --python_out=. --grpc_python_out=. src/server/proto/metric_service.proto

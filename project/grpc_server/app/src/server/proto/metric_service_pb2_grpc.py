@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-from server.proto import metric_service_pb2 as server_dot_proto_dot_metric__service__pb2
+from src.server.proto import metric_service_pb2 as src_dot_server_dot_proto_dot_metric__service__pb2
 
 GRPC_GENERATED_VERSION = '1.67.1'
 GRPC_VERSION = grpc.__version__
@@ -18,7 +18,7 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + f' but the generated code in server/proto/metric_service_pb2_grpc.py depends on'
+        + f' but the generated code in src/server/proto/metric_service_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
@@ -37,8 +37,8 @@ class MetricServiceStub(object):
         """
         self.GetMetrics = channel.unary_unary(
                 '/metric.MetricService/GetMetrics',
-                request_serializer=server_dot_proto_dot_metric__service__pb2.MetricRequest.SerializeToString,
-                response_deserializer=server_dot_proto_dot_metric__service__pb2.MetricResponse.FromString,
+                request_serializer=src_dot_server_dot_proto_dot_metric__service__pb2.MetricRequest.SerializeToString,
+                response_deserializer=src_dot_server_dot_proto_dot_metric__service__pb2.MetricResponse.FromString,
                 _registered_method=True)
 
 
@@ -57,8 +57,8 @@ def add_MetricServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'GetMetrics': grpc.unary_unary_rpc_method_handler(
                     servicer.GetMetrics,
-                    request_deserializer=server_dot_proto_dot_metric__service__pb2.MetricRequest.FromString,
-                    response_serializer=server_dot_proto_dot_metric__service__pb2.MetricResponse.SerializeToString,
+                    request_deserializer=src_dot_server_dot_proto_dot_metric__service__pb2.MetricRequest.FromString,
+                    response_serializer=src_dot_server_dot_proto_dot_metric__service__pb2.MetricResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -87,8 +87,8 @@ class MetricService(object):
             request,
             target,
             '/metric.MetricService/GetMetrics',
-            server_dot_proto_dot_metric__service__pb2.MetricRequest.SerializeToString,
-            server_dot_proto_dot_metric__service__pb2.MetricResponse.FromString,
+            src_dot_server_dot_proto_dot_metric__service__pb2.MetricRequest.SerializeToString,
+            src_dot_server_dot_proto_dot_metric__service__pb2.MetricResponse.FromString,
             options,
             channel_credentials,
             insecure,

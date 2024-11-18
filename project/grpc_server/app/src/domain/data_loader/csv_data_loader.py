@@ -3,8 +3,8 @@ from datetime import datetime, timezone
 from typing import List
 import math
 
-from domain.data_loader.base import DataLoader
-from domain.metric.data_point import DataPoint
+from src.domain.data_loader.base import DataLoader
+from src.domain.metric.data_point import DataPoint
 
 
 class CSVDataLoader(DataLoader):
