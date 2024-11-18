@@ -6,7 +6,7 @@ services:
     ports:
       - "${REST_API_GATEWAY_PORT}:${REST_API_GATEWAY_PORT}"
     env_file:
-      - ./fastapi/.env
+      - ./rest_api_gateway/.env
     depends_on:
       - grpc_server
     command: ["python", "manage.py", "runserver", "${REST_API_GATEWAY_PORT}"]
