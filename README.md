@@ -17,7 +17,6 @@
 6. [How to Run](#how-to-run)
    - [Using Docker](#using-docker)
    - [Without Docker](#without-docker)
-7. [Changing the Data Loader](#changing-the-data-loader)
 
 ## Task
 ![Task Overview](./README-assets/task-graph.png)  
