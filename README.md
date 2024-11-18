@@ -3,7 +3,7 @@
 
 ## Table of Contents
 1. [Task](#task)
-2. [Challenge](#challenge)
+2. [Challenges](#challenges)
    - [Data Source](#data-source)
    - [Data Cleaning](#data-cleaning)
 3. [Future Enhancements](#future-enhancements)
@@ -12,8 +12,12 @@
    - [FastAPI](#fastapi)
    - [Typer](#typer)
    - [InfluxDB](#influxdb)
-5. [How to Run](#how-to-run)
-   - [Changing the Data Loader](#changing-the-data-loader)
+5. [Project Structure](#project-structure)
+   - [Directory Structure](#directory-structure)
+6. [How to Run](#how-to-run)
+   - [Using Docker](#using-docker)
+   - [Without Docker](#without-docker)
+7. [Changing the Data Loader](#changing-the-data-loader)
 
 ## Task
 ![Task Overview](./README-assets/task-graph.png)  
@@ -21,65 +25,104 @@ Create a gRPC server that serves time-based electricity consumption data from `m
 
 ## Challenges
 
-### Data Source:
-CSV may not be the most efficient format for serving time-series data. Additionally, no specific database has been designated for this project, presenting a challenge in terms of loading data. To address this, I will integrate multiple data sources (such as InfluxDB) and design the code to be flexible, allowing support for different data sources for each metric.
+### Data Source
+CSV may not be the most efficient format for serving time-series data. Additionally, no specific database has been designated for this project, presenting a challenge in terms of loading data. To address this, multiple data sources (such as InfluxDB) will be integrated. The code will be designed to be flexible, allowing support for different data sources for each metric.
 
-To implement this, I will use the **Strategy Design Pattern** to handle different data loaders and the **Factory Design Pattern** to manage these loaders within the gRPC server.
+To implement this, the **Strategy Design Pattern** will handle different data loaders and the **Factory Design Pattern** will manage these loaders within the gRPC server.
 
-### Data Cleaning:
-I found a row in CSV file with NaN value. for now I just delete it :)
+### Data Cleaning
+A row in the CSV file contains a NaN value. For now, it is deleted to ensure data integrity.
 
 ## Future Enhancements
-1. **Additional Data Loaders:** Integrate other data loaders (e.g., TimescaleDB) for testing and comparing different time-series databases. This will help in determining the best fit for the project.
-
-2. **Data Seeders:** Data seeders could be written to transform and load data into various data stores (InfluxDB, TimescaleDB, etc.), ensuring data compatibility across different databases.
-
-3. **Streaming:** If the dataset grows large, we might introduce gRPC streaming to optimize data loading, providing real-time data to clients instead of loading all data at once.
+1. **Additional Data Loaders:** Integrate other data loaders (e.g., TimescaleDB) for testing and comparing different time-series databases. This will help determine the best fit for the project.
+2. **Data Seeders:** Develop data seeders to transform and load data into various data stores (InfluxDB, TimescaleDB, etc.), ensuring data compatibility across different databases.
+3. **Streaming:** Introduce gRPC streaming to optimize data loading, providing real-time data to clients instead of loading all data at once as the dataset grows.
 
 ## Technologies
 
 ### Python gRPC Server
-We will use Python to create the gRPC server that serves the data.
+Python will be used to create the gRPC server that serves the data.
 
 ### FastAPI
-[FastAPI](https://fastapi.tiangolo.com/) is a modern, fast (high-performance) web framework for building APIs with Python. Based on standard Python type hints, it will be used to build the API layer of the project. The structure and best practices will follow the guidelines outlined in the [FastAPI Best Practices](https://github.com/zhanymkanov/fastapi-best-practices) repository.
+[FastAPI](https://fastapi.tiangolo.com/) is a modern, fast (high-performance) web framework for building APIs with Python. It will be used to build the API layer of the project, following best practices outlined in the [FastAPI Best Practices](https://github.com/zhanymkanov/fastapi-best-practices) repository.
 
 ### Typer
-[Typer](https://typer.tiangolo.com/) is a library for building command-line interface (CLI) applications. It will be used for managing project commands, such as running the project, executing tests, and other administrative tasks.
+[Typer](https://typer.tiangolo.com/) is a library for building command-line interface (CLI) applications. It will manage project commands, such as running the project, executing tests, and other administrative tasks.
 
 ### InfluxDB
-[InfluxDB](https://www.influxdata.com/) is a database designed for storing and querying time-series data. It will be used to store electricity consumption data.
+[InfluxDB](https://www.influxdata.com/) is a database designed for storing and querying time-series data. It will store electricity consumption data.
+
+## Project Structure
+
+### Directory Structure
+\`\`\`
+project/
+├── docker-compose.yml
+├── rest_api_gateway/      # FastAPI application
+├── grpc_server/           # gRPC server data provider
+├── influxdb/              # Timeseries database
+└── .env                   # Environment variables for Docker Compose
+\`\`\`
+
+### `grpc_server` and `rest_api_gateway`
+Both `grpc_server` and `rest_api_gateway` have the following structure:
+```
+.../
+├── requirements.txt
+├── .env                   # Env variables for internal service configs
+├── Dockerfile
+└── app/                   # Application that executes in the container
+    ├── manage.py          # CLI to work with the application
+    └── src/               # Application source code
+        └── ...
+```
+
+Everything starts from **manage.py**! `manage.py` uses Typer and acts as an interface to work with the application.
+
+You can see available commands by executing this command in the **/app** directory:
+```
+python manage.py --help
+```
 
 ## How to Run
+
+### Using Docker
+
 1. Navigate to the project directory:
-   ```bash
+   \`\`\`
    cd project
-   ```
-2. Start the services using Docker Compose:
-   ```bash
+   \`\`\`
+2. Create `.env` files. You can do this easily by using `.env.sample` files. Make a copy of them or rename them:
+   - `project/.env.sample`
+   - `project/grpc_server/.env.sample`
+   - `project/rest_api_gateway/.env.sample`
+3. Start the services using Docker Compose:
+   \`\`\`
    docker-compose up
-   ```
-3. Access the API documentation and interact with it at [http://localhost:8000/docs](http://localhost:8000/docs).
+   \`\`\`
+4. Access the API documentation at [http://localhost:8000/docs](http://localhost:8000/docs).
 
-### Changing the Data Loader
-Currently, there are two data loaders available for the metrics in the system: CSV and InfluxDB. You can switch between them in the gRPC server to load data for the metrics. The configuration is located in `project/grpc_server/app/server/server.py`.
+### Without Docker
 
-#### CSV Loader
-To use the CSV data loader, modify the code as follows:
-```python
-# CSV data_loader
-data_loader = DataLoaderFactory.create_csv_loader('meterusage.csv')
-self.metric_use_cace = MetricUseCase(data_loader)
-```
+1. Run `grpc_server`:
+   \`\`\`
+   cd project/grpc_server
+   python -m venv venv
+   source venv/bin/activate
+   pip install -r requirements.txt
+   python manage.py runserver 50051
+   \`\`\`
 
-#### InfluxDB Loader
-To use the InfluxDB data loader, update the code like this:
-```python
-# InfluxDB data_loader
-data_loader = DataLoaderFactory.create_influxdb_loader(
-    os.getenv('INFLUXDB_URL'),
-    os.getenv('INFLUXDB_TOKEN'), 
-    os.getenv('INFLUXDB_ORG')
-)
-self.metric_use_cace = MetricUseCase(data_loader)
-```
+2. Run `rest_api_gateway`:
+   \`\`\`
+   cd project/rest_api_gateway
+   python -m venv venv
+   source venv/bin/activate
+   pip install -r requirements.txt
+   python manage.py runserver 8000
+   \`\`\`
+
+3. Access the API documentation at [http://localhost:8000/docs](http://localhost:8000/docs).
+
+Note: InfluxDB can only be used via Docker.
+
