@@ -54,14 +54,14 @@ Python will be used to create the gRPC server that serves the data.
 ## Project Structure
 
 ### Directory Structure
-\`\`\`
+```
 project/
 ├── docker-compose.yml
 ├── rest_api_gateway/      # FastAPI application
 ├── grpc_server/           # gRPC server data provider
 ├── influxdb/              # Timeseries database
 └── .env                   # Environment variables for Docker Compose
-\`\`\`
+```
 
 ### `grpc_server` and `rest_api_gateway`
 Both `grpc_server` and `rest_api_gateway` have the following structure:
@@ -88,38 +88,38 @@ python manage.py --help
 ### Using Docker
 
 1. Navigate to the project directory:
-   \`\`\`
+   ```
    cd project
-   \`\`\`
+   ```
 2. Create `.env` files. You can do this easily by using `.env.sample` files. Make a copy of them or rename them:
    - `project/.env.sample`
    - `project/grpc_server/.env.sample`
    - `project/rest_api_gateway/.env.sample`
 3. Start the services using Docker Compose:
-   \`\`\`
+   ```
    docker-compose up
-   \`\`\`
+   ```
 4. Access the API documentation at [http://localhost:8000/docs](http://localhost:8000/docs).
 
 ### Without Docker
 
 1. Run `grpc_server`:
-   \`\`\`
+   ```
    cd project/grpc_server
    python -m venv venv
    source venv/bin/activate
    pip install -r requirements.txt
    python manage.py runserver 50051
-   \`\`\`
+   ```
 
 2. Run `rest_api_gateway`:
-   \`\`\`
+   ```
    cd project/rest_api_gateway
    python -m venv venv
    source venv/bin/activate
    pip install -r requirements.txt
    python manage.py runserver 8000
-   \`\`\`
+   ```
 
 3. Access the API documentation at [http://localhost:8000/docs](http://localhost:8000/docs).
 
